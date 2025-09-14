@@ -19,19 +19,19 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "can.h"
+#include "dma.h"
 #include "usart.h"
 #include "gpio.h"
-#include "pid.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "pid.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 pid_type_def speed_pid;  
-float target_speed = 2000.0f;  // 目标速度值
+float target_speed = 2000.0f;  // 目标速度�??
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -89,11 +89,11 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   MX_CAN1_Init();
-  can_filter_init(); 
+  MX_DMA_Init();
   MX_USART6_UART_Init();
-
   /* USER CODE BEGIN 2 */
-pid_init(&speed_pid, 2.4f, 0.1f, 0.65f, 15000, 0);//PID调参
+pid_init(&speed_pid, 1.8f, 0.15f, 0.8f, 15000, 0);//PID调参
+can_filter_init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -105,8 +105,11 @@ pid_init(&speed_pid, 2.4f, 0.1f, 0.65f, 15000, 0);//PID调参
     /* USER CODE BEGIN 3 */
     int16_t pid_output = pid_calculate(&speed_pid, target_speed, current_speed_4);//计算PID输出
     CAN_cmd_chassis(0, 0, 0, pid_output);
-    UART_SendSpeed(current_speed_4);
-    HAL_Delay(50);
+     if (HAL_UART_GetState(&huart6) == HAL_UART_STATE_READY)
+    {
+      UART_SendSpeed_DMA(current_speed_4,2000);
+    }//DMA模式发送
+    HAL_Delay(10);
   }
   /* USER CODE END 3 */
 }

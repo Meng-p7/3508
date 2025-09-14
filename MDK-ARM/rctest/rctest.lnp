@@ -3,6 +3,7 @@
 "rctest\main.o"
 "rctest\gpio.o"
 "rctest\can.o"
+"rctest\dma.o"
 "rctest\usart.o"
 "rctest\stm32f4xx_it.o"
 "rctest\stm32f4xx_hal_msp.o"

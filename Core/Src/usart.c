@@ -22,10 +22,13 @@
 
 /* USER CODE BEGIN 0 */
 #include <stdio.h>
-#include <string.h> 
+#include <string.h>
+uint8_t uart_tx_ready = 1; 
+static char tx_buf[16];
 /* USER CODE END 0 */
 
 UART_HandleTypeDef huart6;
+DMA_HandleTypeDef hdma_usart6_tx;
 
 /* USART6 init function */
 
@@ -81,8 +84,27 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
     GPIO_InitStruct.Alternate = GPIO_AF8_USART6;
     HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
 
+    /* USART6 DMA Init */
+    /* USART6_TX Init */
+    hdma_usart6_tx.Instance = DMA2_Stream6;
+    hdma_usart6_tx.Init.Channel = DMA_CHANNEL_5;
+    hdma_usart6_tx.Init.Direction = DMA_MEMORY_TO_PERIPH;
+    hdma_usart6_tx.Init.PeriphInc = DMA_PINC_DISABLE;
+    hdma_usart6_tx.Init.MemInc = DMA_MINC_ENABLE;
+    hdma_usart6_tx.Init.PeriphDataAlignment = DMA_PDATAALIGN_BYTE;
+    hdma_usart6_tx.Init.MemDataAlignment = DMA_MDATAALIGN_BYTE;
+    hdma_usart6_tx.Init.Mode = DMA_NORMAL;
+    hdma_usart6_tx.Init.Priority = DMA_PRIORITY_LOW;
+    hdma_usart6_tx.Init.FIFOMode = DMA_FIFOMODE_DISABLE;
+    if (HAL_DMA_Init(&hdma_usart6_tx) != HAL_OK)
+    {
+      Error_Handler();
+    }
+
+    __HAL_LINKDMA(uartHandle,hdmatx,hdma_usart6_tx);
+
     /* USART6 interrupt Init */
-    HAL_NVIC_SetPriority(USART6_IRQn, 0, 0);
+    HAL_NVIC_SetPriority(USART6_IRQn, 1, 0);
     HAL_NVIC_EnableIRQ(USART6_IRQn);
   /* USER CODE BEGIN USART6_MspInit 1 */
 
@@ -107,6 +129,9 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
     */
     HAL_GPIO_DeInit(GPIOG, GPIO_PIN_14|GPIO_PIN_9);
 
+    /* USART6 DMA DeInit */
+    HAL_DMA_DeInit(uartHandle->hdmatx);
+
     /* USART6 interrupt Deinit */
     HAL_NVIC_DisableIRQ(USART6_IRQn);
   /* USER CODE BEGIN USART6_MspDeInit 1 */
@@ -116,11 +141,30 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 }
 
 /* USER CODE BEGIN 1 */
-void UART_SendSpeed(int16_t speed)
+void UART_SendSpeed_DMA(int16_t speed,int16_t target)
 {
-  char buf[16];
-  sprintf(buf, " %d\n", speed);	
-  HAL_UART_Transmit(&huart6, (uint8_t*)buf, strlen(buf), 500);
+	//检查是否可以发送（
+  if (!uart_tx_ready) {
+    return;  
+  }
+	
+	uint16_t len = sprintf(tx_buf, "%d,%d\n", speed,target);
+	uart_tx_ready = 0;
+  if (HAL_UART_Transmit_DMA(&huart6, (uint8_t*)tx_buf, len) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
 }
+
+//中断回调
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart)
+{
+  if (huart == &huart6) {  
+    uart_tx_ready = 1;  
+  }
+}
+
+
 
 /* USER CODE END 1 */

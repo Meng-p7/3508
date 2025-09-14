@@ -31,6 +31,7 @@ rctest\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr.h
 rctest\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h
 rctest\main.o: ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
 rctest\main.o: ../Core/Inc/can.h
+rctest\main.o: ../Core/Inc/dma.h
 rctest\main.o: ../Core/Inc/usart.h
 rctest\main.o: ../Core/Inc/gpio.h
 rctest\main.o: ..\USER\pid.h
