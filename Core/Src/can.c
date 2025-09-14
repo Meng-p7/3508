@@ -24,9 +24,10 @@
 CAN_HandleTypeDef hcan1;
 CAN_TxHeaderTypeDef  chassis_tx_message;
 motor_measure_t motor_chassis[4];  // 定义4个电机的测量数据数组
-float current_speed_4; 
-float current_ecd_4; 
-
+float current_speed_4;
+float current_location_4;
+float initial_location_4 = 0.0f;  // 初始位置
+uint8_t is_initialized_4 = 0;     // 初始化标志
 /* USER CODE END 0 */
 
 CAN_HandleTypeDef hcan1;
@@ -72,7 +73,6 @@ void can_filter_init(void)
     can_filter_st.FilterMaskIdLow = 0x0000;
     can_filter_st.FilterBank = 0;
     can_filter_st.FilterFIFOAssignment = CAN_RX_FIFO0;
-    can_filter_st.FilterBank = 14;
      if (HAL_CAN_ConfigFilter(&hcan1, &can_filter_st) != HAL_OK)
   {
     Error_Handler();
@@ -181,19 +181,29 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) //中断回调�
      case 0x203:
      case 0x204:   
      {
-          uint8_t i = rx_header.StdId - 0x201;
+         uint8_t i = rx_header.StdId - 0x201;
          get_motor_measure(&motor_chassis[i], rx_data);
          current_speed_4 = motor_chassis[3].speed_rpm;
-		 current_ecd_4 = motor_chassis[3].ecd;
-         break;
-     }
+		 if (!is_initialized_4) {
+			initial_location_4 = motor_chassis[3].ecd;
+            is_initialized_4 = 1;
+            current_location_4 = 0.0f;
+            } else {
+            // 计算相对位置
+          current_location_4 = motor_chassis[3].ecd - initial_location_4;                       
+            // 处理编码器溢出
+        if (current_location_4 > 4096) {
+        current_location_4 -= 8192;
+         } else if (current_location_4 < -4096) {
+         current_location_4 += 8192;
+         }
+	 }   
+          break;
+ }
      default:
-     {
-         break;
+	 {     
+	 break;
      }
  }
 }
-
-
-
 /* USER CODE END 1 */

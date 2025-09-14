@@ -53,9 +53,11 @@ typedef struct
  (ptr)->temperate = (data)[6]; \
  }
 
-extern motor_measure_t motor_chassis[4];  // 声明数组（定义在can.c�??
+extern motor_measure_t motor_chassis[4];  // 声明数组
 extern float current_speed_4;
-extern float current_ecd_4;
+extern float current_location_4;
+extern float initial_location_4 ;  
+extern uint8_t is_initialized_4 ;      
 /* USER CODE END Private defines */
 
 void MX_CAN1_Init(void);

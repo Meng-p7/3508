@@ -31,7 +31,9 @@
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
 pid_type_def speed_pid;  
-float target_speed = 2000.0f;  // 目标速度�??
+pid_type_def location_pid; 
+
+float target_location = 3000.0f; //目标位置
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -92,8 +94,12 @@ int main(void)
   MX_DMA_Init();
   MX_USART6_UART_Init();
   /* USER CODE BEGIN 2 */
-pid_init(&speed_pid, 1.8f, 0.15f, 0.8f, 15000, 0);//PID调参
+pid_init(&speed_pid, 1.8f, 0.15f, 0.4f, 15000, -15000);//PID调参
+pid_init(&location_pid, 0.8f, 0.0f, 0.1f, 5000, -5000);
 can_filter_init();
+extern float current_location_4 ;
+extern float current_speed_4;
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -103,8 +109,11 @@ can_filter_init();
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+ if (is_initialized_4) {	  
+	float target_speed = pid_calculate(&location_pid, target_location, current_location_4);
     int16_t pid_output = pid_calculate(&speed_pid, target_speed, current_speed_4);//计算PID输出
     CAN_cmd_chassis(0, 0, 0, pid_output);
+     }
      if (HAL_UART_GetState(&huart6) == HAL_UART_STATE_READY)
     {
       UART_SendSpeed_DMA(current_speed_4,2000);
