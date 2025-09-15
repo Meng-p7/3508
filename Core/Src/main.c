@@ -110,7 +110,7 @@ extern float current_speed_4;
 
     /* USER CODE BEGIN 3 */
  if (is_initialized_4) {	  
-	float target_speed = pid_calculate(&location_pid, target_location, current_location_4);
+	float target_speed = pid_calculate(&location_pid, target_location, current_location_4) * 60.0f / 8192.0f;
     int16_t pid_output = pid_calculate(&speed_pid, target_speed, current_speed_4);//计算PID输出
     CAN_cmd_chassis(0, 0, 0, pid_output);
      }

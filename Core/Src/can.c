@@ -26,7 +26,7 @@ CAN_TxHeaderTypeDef  chassis_tx_message;
 motor_measure_t motor_chassis[4];  // 定义4个电机的测量数据数组
 float current_speed_4;
 float current_location_4;
-float initial_location_4 = 0.0f;  // 初始位置
+uint16_t initial_location_4 = 0;  // 初始位置
 uint8_t is_initialized_4 = 0;     // 初始化标志
 /* USER CODE END 0 */
 
@@ -67,9 +67,9 @@ void can_filter_init(void)
     can_filter_st.FilterActivation = ENABLE;
     can_filter_st.FilterMode = CAN_FILTERMODE_IDMASK;
     can_filter_st.FilterScale = CAN_FILTERSCALE_32BIT;
-    can_filter_st.FilterIdHigh = 0x0000;
+    can_filter_st.FilterIdHigh = 0x201 << 5;
     can_filter_st.FilterIdLow = 0x0000;
-    can_filter_st.FilterMaskIdHigh = 0x0000;
+    can_filter_st.FilterMaskIdHigh =  0x7F8 << 5;
     can_filter_st.FilterMaskIdLow = 0x0000;
     can_filter_st.FilterBank = 0;
     can_filter_st.FilterFIFOAssignment = CAN_RX_FIFO0;
@@ -184,20 +184,22 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) //中断回调�
          uint8_t i = rx_header.StdId - 0x201;
          get_motor_measure(&motor_chassis[i], rx_data);
          current_speed_4 = motor_chassis[3].speed_rpm;
+		 int32_t ecd_diff = 0; 
 		 if (!is_initialized_4) {
 			initial_location_4 = motor_chassis[3].ecd;
             is_initialized_4 = 1;
             current_location_4 = 0.0f;
-            } else {
-            // 计算相对位置
-          current_location_4 = motor_chassis[3].ecd - initial_location_4;                       
-            // 处理编码器溢出
-        if (current_location_4 > 4096) {
-        current_location_4 -= 8192;
-         } else if (current_location_4 < -4096) {
-         current_location_4 += 8192;
+            } else 
+	  {           
+        uint16_t current_ecd = motor_chassis[3].ecd;
+        ecd_diff = (int32_t)current_ecd - (int32_t)initial_location_4;       // 计算相对位置                 
+        if (ecd_diff > 4096) {
+        ecd_diff -= 8192;
+         } else if (ecd_diff < -4096) {
+         ecd_diff += 8192;// 处理编码器溢出
          }
-	 }   
+		 current_location_4 = (float)ecd_diff;
+	  } 
           break;
  }
      default:

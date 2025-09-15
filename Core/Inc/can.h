@@ -29,7 +29,7 @@ extern "C" {
 #include "main.h"
 
 /* USER CODE BEGIN Includes */
-
+#include <stdint.h>
 /* USER CODE END Includes */
 
 extern CAN_HandleTypeDef hcan1;
@@ -56,7 +56,7 @@ typedef struct
 extern motor_measure_t motor_chassis[4];  // 声明数组
 extern float current_speed_4;
 extern float current_location_4;
-extern float initial_location_4 ;  
+extern uint16_t initial_location_4 ;  
 extern uint8_t is_initialized_4 ;      
 /* USER CODE END Private defines */
 
