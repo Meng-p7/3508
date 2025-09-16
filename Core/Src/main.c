@@ -30,10 +30,13 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
+
 pid_type_def speed_pid;  
 pid_type_def location_pid; 
-
-float target_location = 3000.0f; //目标位置
+extern float current_location_4 ;
+extern float current_speed_4;
+extern int32_t motor_total_ecd[4]; 
+float target_location_4 =3000.0f  ;
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
@@ -94,12 +97,10 @@ int main(void)
   MX_DMA_Init();
   MX_USART6_UART_Init();
   /* USER CODE BEGIN 2 */
-pid_init(&speed_pid, 1.8f, 0.15f, 0.4f, 15000, -15000);//PID调参
-pid_init(&location_pid, 0.8f, 0.0f, 0.1f, 5000, -5000);
+pid_init(&location_pid, 1.32f, 0.03f, 0.99, 8000, -8000);
+pid_init(&speed_pid, 6.5f, 1.0f, 3.0f, 15000, -15000);//PID调参
 can_filter_init();
-extern float current_location_4 ;
-extern float current_speed_4;
-
+target_location_4 = 2000.0f;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -108,17 +109,15 @@ extern float current_speed_4;
   {
     /* USER CODE END WHILE */
 
-    /* USER CODE BEGIN 3 */
- if (is_initialized_4) {	  
-	float target_speed = pid_calculate(&location_pid, target_location, current_location_4) * 60.0f / 8192.0f;
-    int16_t pid_output = pid_calculate(&speed_pid, target_speed, current_speed_4);//计算PID输出
-    CAN_cmd_chassis(0, 0, 0, pid_output);
-     }
+    /* USER CODE BEGIN 3 */	  
+	float target_speed_4 = pid_calculate(&location_pid, target_location_4, current_location_4);
+	int16_t pid_output = (int16_t)pid_calculate(&speed_pid,target_speed_4, current_speed_4);//计算PID输出
+    CAN_cmd_chassis(0, 0, 0, pid_output); 
      if (HAL_UART_GetState(&huart6) == HAL_UART_STATE_READY)
     {
-      UART_SendSpeed_DMA(current_speed_4,2000);
+      UART_SendSpeed_DMA(2000,current_location_4);
     }//DMA模式发送
-    HAL_Delay(10);
+    HAL_Delay(3);
   }
   /* USER CODE END 3 */
 }

@@ -56,8 +56,9 @@ typedef struct
 extern motor_measure_t motor_chassis[4];  // 声明数组
 extern float current_speed_4;
 extern float current_location_4;
-extern uint16_t initial_location_4 ;  
-extern uint8_t is_initialized_4 ;      
+extern int32_t motor_total_ecd[4];
+
+
 /* USER CODE END Private defines */
 
 void MX_CAN1_Init(void);

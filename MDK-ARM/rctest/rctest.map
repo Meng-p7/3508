@@ -44,8 +44,8 @@ Section Cross References
     main.o(i.main) refers to usart.o(i.UART_SendSpeed_DMA) for UART_SendSpeed_DMA
     main.o(i.main) refers to stm32f4xx_hal.o(i.HAL_Delay) for HAL_Delay
     main.o(i.main) refers to main.o(.bss) for .bss
-    main.o(i.main) refers to can.o(.data) for is_initialized_4
     main.o(i.main) refers to main.o(.data) for .data
+    main.o(i.main) refers to can.o(.data) for current_speed_4
     main.o(i.main) refers to usart.o(.bss) for huart6
     gpio.o(i.MX_GPIO_Init) refers to rt_memclr_w.o(.text) for __aeabi_memclr4
     gpio.o(i.MX_GPIO_Init) refers to stm32f4xx_hal_gpio.o(i.HAL_GPIO_WritePin) for HAL_GPIO_WritePin
@@ -1022,29 +1022,29 @@ Image Symbol Table
     __NVIC_SetPriority                       0x0800261f   Thumb Code    32  stm32f4xx_hal_cortex.o(i.__NVIC_SetPriority)
     i.can_filter_init                        0x08002640   Section        0  can.o(i.can_filter_init)
     i.main                                   0x0800268c   Section        0  main.o(i.main)
-    i.pid_calculate                          0x08002788   Section        0  pid.o(i.pid_calculate)
-    i.pid_init                               0x08002824   Section        0  pid.o(i.pid_init)
-    x$fpl$fpinit                             0x08002850   Section       10  fpinit.o(x$fpl$fpinit)
-    $v0                                      0x08002850   Number         0  fpinit.o(x$fpl$fpinit)
-    .constdata                               0x0800285a   Section        8  stm32f4xx_hal_dma.o(.constdata)
-    flagBitshiftOffset                       0x0800285a   Data           8  stm32f4xx_hal_dma.o(.constdata)
-    .constdata                               0x08002862   Section       16  system_stm32f4xx.o(.constdata)
-    .constdata                               0x08002872   Section        8  system_stm32f4xx.o(.constdata)
+    i.pid_calculate                          0x08002768   Section        0  pid.o(i.pid_calculate)
+    i.pid_init                               0x08002804   Section        0  pid.o(i.pid_init)
+    x$fpl$fpinit                             0x08002830   Section       10  fpinit.o(x$fpl$fpinit)
+    $v0                                      0x08002830   Number         0  fpinit.o(x$fpl$fpinit)
+    .constdata                               0x0800283a   Section        8  stm32f4xx_hal_dma.o(.constdata)
+    flagBitshiftOffset                       0x0800283a   Data           8  stm32f4xx_hal_dma.o(.constdata)
+    .constdata                               0x08002842   Section       16  system_stm32f4xx.o(.constdata)
+    .constdata                               0x08002852   Section        8  system_stm32f4xx.o(.constdata)
     .data                                    0x20000000   Section        4  main.o(.data)
-    .data                                    0x20000004   Section       12  can.o(.data)
-    .data                                    0x20000010   Section        1  usart.o(.data)
-    .data                                    0x20000014   Section       12  stm32f4xx_hal.o(.data)
-    .data                                    0x20000020   Section        4  system_stm32f4xx.o(.data)
-    .bss                                     0x20000024   Section       64  main.o(.bss)
-    .bss                                     0x20000064   Section      104  can.o(.bss)
-    .bss                                     0x200000cc   Section      180  usart.o(.bss)
-    tx_buf                                   0x200000cc   Data          16  usart.o(.bss)
-    .bss                                     0x20000180   Section       96  libspace.o(.bss)
-    HEAP                                     0x200001e0   Section      512  startup_stm32f407xx.o(HEAP)
-    Heap_Mem                                 0x200001e0   Data         512  startup_stm32f407xx.o(HEAP)
-    STACK                                    0x200003e0   Section     1024  startup_stm32f407xx.o(STACK)
-    Stack_Mem                                0x200003e0   Data        1024  startup_stm32f407xx.o(STACK)
-    __initial_sp                             0x200007e0   Data           0  startup_stm32f407xx.o(STACK)
+    .data                                    0x20000004   Section        8  can.o(.data)
+    .data                                    0x2000000c   Section        1  usart.o(.data)
+    .data                                    0x20000010   Section       12  stm32f4xx_hal.o(.data)
+    .data                                    0x2000001c   Section        4  system_stm32f4xx.o(.data)
+    .bss                                     0x20000020   Section       64  main.o(.bss)
+    .bss                                     0x20000060   Section      120  can.o(.bss)
+    .bss                                     0x200000d8   Section      180  usart.o(.bss)
+    tx_buf                                   0x200000d8   Data          16  usart.o(.bss)
+    .bss                                     0x2000018c   Section       96  libspace.o(.bss)
+    HEAP                                     0x200001f0   Section      512  startup_stm32f407xx.o(HEAP)
+    Heap_Mem                                 0x200001f0   Data         512  startup_stm32f407xx.o(HEAP)
+    STACK                                    0x200003f0   Section     1024  startup_stm32f407xx.o(STACK)
+    Stack_Mem                                0x200003f0   Data        1024  startup_stm32f407xx.o(STACK)
+    __initial_sp                             0x200007f0   Data           0  startup_stm32f407xx.o(STACK)
 
     Global Symbols
 
@@ -1261,7 +1261,7 @@ Image Symbol Table
     HAL_CAN_Init                             0x08000c8d   Thumb Code   338  stm32f4xx_hal_can.o(i.HAL_CAN_Init)
     HAL_CAN_MspInit                          0x08000de1   Thumb Code   106  can.o(i.HAL_CAN_MspInit)
     HAL_CAN_RxFifo0FullCallback              0x08000e59   Thumb Code     2  stm32f4xx_hal_can.o(i.HAL_CAN_RxFifo0FullCallback)
-    HAL_CAN_RxFifo0MsgPendingCallback        0x08000e5d   Thumb Code   192  can.o(i.HAL_CAN_RxFifo0MsgPendingCallback)
+    HAL_CAN_RxFifo0MsgPendingCallback        0x08000e5d   Thumb Code   194  can.o(i.HAL_CAN_RxFifo0MsgPendingCallback)
     HAL_CAN_RxFifo1FullCallback              0x08000f29   Thumb Code     2  stm32f4xx_hal_can.o(i.HAL_CAN_RxFifo1FullCallback)
     HAL_CAN_RxFifo1MsgPendingCallback        0x08000f2b   Thumb Code     2  stm32f4xx_hal_can.o(i.HAL_CAN_RxFifo1MsgPendingCallback)
     HAL_CAN_SleepCallback                    0x08000f2d   Thumb Code     2  stm32f4xx_hal_can.o(i.HAL_CAN_SleepCallback)
@@ -1322,35 +1322,34 @@ Image Symbol Table
     USART6_IRQHandler                        0x08002611   Thumb Code     6  stm32f4xx_it.o(i.USART6_IRQHandler)
     UsageFault_Handler                       0x0800261d   Thumb Code     2  stm32f4xx_it.o(i.UsageFault_Handler)
     can_filter_init                          0x08002641   Thumb Code    72  can.o(i.can_filter_init)
-    main                                     0x0800268d   Thumb Code   188  main.o(i.main)
-    pid_calculate                            0x08002789   Thumb Code   148  pid.o(i.pid_calculate)
-    pid_init                                 0x08002825   Thumb Code    38  pid.o(i.pid_init)
-    _fp_init                                 0x08002851   Thumb Code    10  fpinit.o(x$fpl$fpinit)
-    __fplib_config_fpu_vfp                   0x08002859   Thumb Code     0  fpinit.o(x$fpl$fpinit)
-    __fplib_config_pureend_doubles           0x08002859   Thumb Code     0  fpinit.o(x$fpl$fpinit)
-    AHBPrescTable                            0x08002862   Data          16  system_stm32f4xx.o(.constdata)
-    APBPrescTable                            0x08002872   Data           8  system_stm32f4xx.o(.constdata)
-    Region$$Table$$Base                      0x0800287c   Number         0  anon$$obj.o(Region$$Table)
-    Region$$Table$$Limit                     0x0800289c   Number         0  anon$$obj.o(Region$$Table)
-    target_location                          0x20000000   Data           4  main.o(.data)
-    is_initialized_4                         0x20000004   Data           1  can.o(.data)
-    initial_location_4                       0x20000006   Data           2  can.o(.data)
-    current_speed_4                          0x20000008   Data           4  can.o(.data)
-    current_location_4                       0x2000000c   Data           4  can.o(.data)
-    uart_tx_ready                            0x20000010   Data           1  usart.o(.data)
-    uwTickFreq                               0x20000014   Data           1  stm32f4xx_hal.o(.data)
-    uwTickPrio                               0x20000018   Data           4  stm32f4xx_hal.o(.data)
-    uwTick                                   0x2000001c   Data           4  stm32f4xx_hal.o(.data)
-    SystemCoreClock                          0x20000020   Data           4  system_stm32f4xx.o(.data)
-    speed_pid                                0x20000024   Data          32  main.o(.bss)
-    location_pid                             0x20000044   Data          32  main.o(.bss)
-    hcan1                                    0x20000064   Data          40  can.o(.bss)
-    chassis_tx_message                       0x2000008c   Data          24  can.o(.bss)
-    motor_chassis                            0x200000a4   Data          40  can.o(.bss)
-    huart6                                   0x200000dc   Data          68  usart.o(.bss)
-    hdma_usart6_tx                           0x20000120   Data          96  usart.o(.bss)
-    __libspace_start                         0x20000180   Data          96  libspace.o(.bss)
-    __temporary_stack_top$libspace           0x200001e0   Data           0  libspace.o(.bss)
+    main                                     0x0800268d   Thumb Code   176  main.o(i.main)
+    pid_calculate                            0x08002769   Thumb Code   148  pid.o(i.pid_calculate)
+    pid_init                                 0x08002805   Thumb Code    38  pid.o(i.pid_init)
+    _fp_init                                 0x08002831   Thumb Code    10  fpinit.o(x$fpl$fpinit)
+    __fplib_config_fpu_vfp                   0x08002839   Thumb Code     0  fpinit.o(x$fpl$fpinit)
+    __fplib_config_pureend_doubles           0x08002839   Thumb Code     0  fpinit.o(x$fpl$fpinit)
+    AHBPrescTable                            0x08002842   Data          16  system_stm32f4xx.o(.constdata)
+    APBPrescTable                            0x08002852   Data           8  system_stm32f4xx.o(.constdata)
+    Region$$Table$$Base                      0x0800285c   Number         0  anon$$obj.o(Region$$Table)
+    Region$$Table$$Limit                     0x0800287c   Number         0  anon$$obj.o(Region$$Table)
+    target_location_4                        0x20000000   Data           4  main.o(.data)
+    current_speed_4                          0x20000004   Data           4  can.o(.data)
+    current_location_4                       0x20000008   Data           4  can.o(.data)
+    uart_tx_ready                            0x2000000c   Data           1  usart.o(.data)
+    uwTickFreq                               0x20000010   Data           1  stm32f4xx_hal.o(.data)
+    uwTickPrio                               0x20000014   Data           4  stm32f4xx_hal.o(.data)
+    uwTick                                   0x20000018   Data           4  stm32f4xx_hal.o(.data)
+    SystemCoreClock                          0x2000001c   Data           4  system_stm32f4xx.o(.data)
+    speed_pid                                0x20000020   Data          32  main.o(.bss)
+    location_pid                             0x20000040   Data          32  main.o(.bss)
+    motor_total_ecd                          0x20000060   Data          16  can.o(.bss)
+    hcan1                                    0x20000070   Data          40  can.o(.bss)
+    chassis_tx_message                       0x20000098   Data          24  can.o(.bss)
+    motor_chassis                            0x200000b0   Data          40  can.o(.bss)
+    huart6                                   0x200000e8   Data          68  usart.o(.bss)
+    hdma_usart6_tx                           0x2000012c   Data          96  usart.o(.bss)
+    __libspace_start                         0x2000018c   Data          96  libspace.o(.bss)
+    __temporary_stack_top$libspace           0x200001ec   Data           0  libspace.o(.bss)
 
 
 
@@ -1360,9 +1359,9 @@ Memory Map of the image
 
   Image Entry point : 0x08000189
 
-  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x000028c0, Max: 0x00100000, ABSOLUTE)
+  Load Region LR_IROM1 (Base: 0x08000000, Size: 0x0000289c, Max: 0x00100000, ABSOLUTE)
 
-    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x0000289c, Max: 0x00100000, ABSOLUTE)
+    Execution Region ER_IROM1 (Exec base: 0x08000000, Load base: 0x08000000, Size: 0x0000287c, Max: 0x00100000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
@@ -1535,36 +1534,37 @@ Memory Map of the image
     0x0800261e   0x0800261e   0x00000020   Code   RO         1489    i.__NVIC_SetPriority  stm32f4xx_hal_cortex.o
     0x0800263e   0x0800263e   0x00000002   PAD
     0x08002640   0x08002640   0x0000004c   Code   RO          193    i.can_filter_init   can.o
-    0x0800268c   0x0800268c   0x000000fc   Code   RO           15    i.main              main.o
-    0x08002788   0x08002788   0x0000009c   Code   RO         2305    i.pid_calculate     pid.o
-    0x08002824   0x08002824   0x0000002c   Code   RO         2306    i.pid_init          pid.o
-    0x08002850   0x08002850   0x0000000a   Code   RO         2494    x$fpl$fpinit        fz_wm.l(fpinit.o)
-    0x0800285a   0x0800285a   0x00000008   Data   RO         1206    .constdata          stm32f4xx_hal_dma.o
-    0x08002862   0x08002862   0x00000010   Data   RO         2269    .constdata          system_stm32f4xx.o
-    0x08002872   0x08002872   0x00000008   Data   RO         2270    .constdata          system_stm32f4xx.o
-    0x0800287a   0x0800287a   0x00000002   PAD
-    0x0800287c   0x0800287c   0x00000020   Data   RO         2550    Region$$Table       anon$$obj.o
+    0x0800268c   0x0800268c   0x000000dc   Code   RO           15    i.main              main.o
+    0x08002768   0x08002768   0x0000009c   Code   RO         2305    i.pid_calculate     pid.o
+    0x08002804   0x08002804   0x0000002c   Code   RO         2306    i.pid_init          pid.o
+    0x08002830   0x08002830   0x0000000a   Code   RO         2494    x$fpl$fpinit        fz_wm.l(fpinit.o)
+    0x0800283a   0x0800283a   0x00000008   Data   RO         1206    .constdata          stm32f4xx_hal_dma.o
+    0x08002842   0x08002842   0x00000010   Data   RO         2269    .constdata          system_stm32f4xx.o
+    0x08002852   0x08002852   0x00000008   Data   RO         2270    .constdata          system_stm32f4xx.o
+    0x0800285a   0x0800285a   0x00000002   PAD
+    0x0800285c   0x0800285c   0x00000020   Data   RO         2550    Region$$Table       anon$$obj.o
 
 
-    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x0800289c, Size: 0x000007e0, Max: 0x0001c000, ABSOLUTE)
+    Execution Region RW_IRAM1 (Exec base: 0x20000000, Load base: 0x0800287c, Size: 0x000007f0, Max: 0x0001c000, ABSOLUTE)
 
     Exec Addr    Load Addr    Size         Type   Attr      Idx    E Section Name        Object
 
-    0x20000000   0x0800289c   0x00000004   Data   RW           17    .data               main.o
-    0x20000004   0x080028a0   0x0000000c   Data   RW          195    .data               can.o
-    0x20000010   0x080028ac   0x00000001   Data   RW          279    .data               usart.o
-    0x20000011   0x080028ad   0x00000003   PAD
-    0x20000014   0x080028b0   0x0000000c   Data   RW         1633    .data               stm32f4xx_hal.o
-    0x20000020   0x080028bc   0x00000004   Data   RW         2271    .data               system_stm32f4xx.o
-    0x20000024        -       0x00000040   Zero   RW           16    .bss                main.o
-    0x20000064        -       0x00000068   Zero   RW          194    .bss                can.o
-    0x200000cc        -       0x000000b4   Zero   RW          278    .bss                usart.o
-    0x20000180        -       0x00000060   Zero   RW         2424    .bss                c_w.l(libspace.o)
-    0x200001e0        -       0x00000200   Zero   RW            2    HEAP                startup_stm32f407xx.o
-    0x200003e0        -       0x00000400   Zero   RW            1    STACK               startup_stm32f407xx.o
+    0x20000000   0x0800287c   0x00000004   Data   RW           17    .data               main.o
+    0x20000004   0x08002880   0x00000008   Data   RW          195    .data               can.o
+    0x2000000c   0x08002888   0x00000001   Data   RW          279    .data               usart.o
+    0x2000000d   0x08002889   0x00000003   PAD
+    0x20000010   0x0800288c   0x0000000c   Data   RW         1633    .data               stm32f4xx_hal.o
+    0x2000001c   0x08002898   0x00000004   Data   RW         2271    .data               system_stm32f4xx.o
+    0x20000020        -       0x00000040   Zero   RW           16    .bss                main.o
+    0x20000060        -       0x00000078   Zero   RW          194    .bss                can.o
+    0x200000d8        -       0x000000b4   Zero   RW          278    .bss                usart.o
+    0x2000018c        -       0x00000060   Zero   RW         2424    .bss                c_w.l(libspace.o)
+    0x200001ec   0x0800289c   0x00000004   PAD
+    0x200001f0        -       0x00000200   Zero   RW            2    HEAP                startup_stm32f407xx.o
+    0x200003f0        -       0x00000400   Zero   RW            1    STACK               startup_stm32f407xx.o
 
 
-    Execution Region RW_IRAM2 (Exec base: 0x2001c000, Load base: 0x080028c0, Size: 0x00000000, Max: 0x00004000, ABSOLUTE)
+    Execution Region RW_IRAM2 (Exec base: 0x2001c000, Load base: 0x0800289c, Size: 0x00000000, Max: 0x00004000, ABSOLUTE)
 
     **** No section assigned to this execution region ****
 
@@ -1576,10 +1576,10 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   Object Name
 
-       548         42          0         12        104       4801   can.o
+       548         40          0          8        120       4677   can.o
         44          4          0          0          0        742   dma.o
        124          8          0          0          0        923   gpio.o
-       404         72          0          4         64     670081   main.o
+       372         52          0          4         64     670087   main.o
        200         14          0          0          0       1699   pid.o
         64         26        392          0       1536        828   startup_stm32f407xx.o
        184         28          0         12          0       9297   stm32f4xx_hal.o
@@ -1595,7 +1595,7 @@ Image component sizes
        328         56          0          1        180       3046   usart.o
 
     ----------------------------------------------------------------------
-      8814        466        458         36       1884     776396   Object Totals
+      8782        444        458         32       1900     776278   Object Totals
          0          0         32          0          0          0   (incl. Generated)
         20          0          2          3          0          0   (incl. Padding)
 
@@ -1637,8 +1637,8 @@ Image component sizes
         10          0          0          0          0        116   fpinit.o
 
     ----------------------------------------------------------------------
-      1124         44          0          0         96       1392   Library Totals
-         8          0          0          0          0          0   (incl. Padding)
+      1124         44          0          0        100       1392   Library Totals
+         8          0          0          0          4          0   (incl. Padding)
 
     ----------------------------------------------------------------------
 
@@ -1648,7 +1648,7 @@ Image component sizes
         10          0          0          0          0        116   fz_wm.l
 
     ----------------------------------------------------------------------
-      1124         44          0          0         96       1392   Library Totals
+      1124         44          0          0        100       1392   Library Totals
 
     ----------------------------------------------------------------------
 
@@ -1657,15 +1657,15 @@ Image component sizes
 
       Code (inc. data)   RO Data    RW Data    ZI Data      Debug   
 
-      9938        510        458         36       1980     768816   Grand Totals
-      9938        510        458         36       1980     768816   ELF Image Totals
-      9938        510        458         36          0          0   ROM Totals
+      9906        488        458         32       2000     768698   Grand Totals
+      9906        488        458         32       2000     768698   ELF Image Totals
+      9906        488        458         32          0          0   ROM Totals
 
 ==============================================================================
 
-    Total RO  Size (Code + RO Data)                10396 (  10.15kB)
-    Total RW  Size (RW Data + ZI Data)              2016 (   1.97kB)
-    Total ROM Size (Code + RO Data + RW Data)      10432 (  10.19kB)
+    Total RO  Size (Code + RO Data)                10364 (  10.12kB)
+    Total RW  Size (RW Data + ZI Data)              2032 (   1.98kB)
+    Total ROM Size (Code + RO Data + RW Data)      10396 (  10.15kB)
 
 ==============================================================================
 

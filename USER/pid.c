@@ -32,10 +32,10 @@ int16_t pid_calculate(pid_type_def *pid, float target, float current) {
     delta = p_out + i_out + d_out;
     
     // 积分限幅处理
-    if (i_out > 200.0f) {
-        i_out = 200.0f;
-    } else if (i_out < -200.0f) {
-        i_out = -200.0f;
+    if (i_out > 300.0f) {
+        i_out = 300.0f;
+    } else if (i_out < -300.0f) {
+        i_out = -300.0f;
     }
 	
 //	//微分限幅处理
